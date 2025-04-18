@@ -10,10 +10,9 @@ engine = create_engine(settings.DATABASE_URL)
 # Create SessionLocal class
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Create Base class for declarative class definitions
+# Create Base class
 Base = declarative_base()
 
-# Database dependency
 def get_db() -> Session:
     """
     Dependency for getting a database session.

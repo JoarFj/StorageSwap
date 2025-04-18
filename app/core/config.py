@@ -1,10 +1,14 @@
 from pydantic_settings import BaseSettings
+from typing import List, Optional
 import os
 import secrets
-from typing import List, Optional
-
+from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
+
+# Load environment variables from .env file if it exists
+env_path = Path('.') / '.env'
+if env_path.exists():
+    load_dotenv(dotenv_path=env_path)
 
 class Settings(BaseSettings):
     """
@@ -15,21 +19,21 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "P2P Storage Space Marketplace"
     DESCRIPTION: str = "A peer-to-peer marketplace for renting out personal storage spaces"
     
-    # Security settings
+    # Security
     SECRET_KEY: str = os.getenv("SECRET_KEY", secrets.token_urlsafe(32))
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 8  # 8 days
     ALGORITHM: str = "HS256"
     
-    # Database settings
+    # Database
     DATABASE_URL: str = os.getenv("DATABASE_URL", "postgresql://postgres:postgres@localhost:5432/storage_space")
     
-    # CORS settings
+    # CORS
     CORS_ORIGINS: List[str] = ["*"]
     
-    # Metrics settings
+    # Metrics
     METRICS_ENABLED: bool = True
     
-    # Application settings
+    # File Storage
     MAX_LISTING_IMAGES: int = 10
     MAX_IMAGE_SIZE_MB: int = 5
     
@@ -37,5 +41,5 @@ class Settings(BaseSettings):
         env_file = ".env"
         case_sensitive = True
 
-# Create settings instance
+# Create a global settings object
 settings = Settings()

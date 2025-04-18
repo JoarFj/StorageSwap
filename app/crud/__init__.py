@@ -1,1 +1,1 @@
-# CRUD operations package initialization
+# Init file for CRUD package

@@ -1,4 +1,21 @@
-FROM python:3.11-slim as base
+# Multi-stage build for Python FastAPI backend and React frontend
+
+# Stage 1: Frontend build
+FROM node:18-alpine AS frontend-build
+WORKDIR /app
+
+# Copy package.json and install dependencies
+COPY client/package*.json ./
+RUN npm ci
+
+# Copy the rest of the frontend code
+COPY client/ ./
+
+# Build the frontend
+RUN npm run build
+
+# Stage 2: Backend build
+FROM python:3.11-slim AS backend
 
 # Set working directory
 WORKDIR /app
@@ -6,29 +23,37 @@ WORKDIR /app
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PYTHONPATH=/app
+    TZ=UTC \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    libpq-dev \
     curl \
+    openssl \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
 COPY pyproject.toml ./
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -e .
+RUN pip install --no-cache-dir . gunicorn
 
-# Copy the application code
-COPY . .
+# Copy backend code
+COPY app/ ./app/
+COPY migrations/ ./migrations/
+COPY alembic.ini .
+COPY start.sh .
+COPY prometheus.yml .
 
-# Create a non-root user and change permissions
-RUN adduser --disabled-password --gecos '' app \
-    && chown -R app:app /app
+# Copy built frontend from stage 1
+COPY --from=frontend-build /app/dist ./static
 
-# Switch to non-root user
-USER app
+# Make start script executable
+RUN chmod +x start.sh
 
-# Run the application with Uvicorn
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]
+# Expose port
+EXPOSE 5000
+
+# Set entrypoint to startup script
+ENTRYPOINT ["./start.sh"]

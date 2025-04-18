@@ -1,16 +1,29 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: storage-space
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: storage-space-secrets
+  namespace: storage-space
+type: Opaque
+# These will be populated via kubectl create/replace command
+# with real values from CI/CD pipeline or manually
+data:
+  DATABASE_URL: "" # Base64 encoded value
+  SECRET_KEY: ""  # Base64 encoded value
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: storage-space-api
+  namespace: storage-space
   labels:
     app: storage-space-api
 spec:
-  replicas: 3  # Start with 3 replicas for high availability
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 1  # Maximum number of pods that can be created over the desired number
-      maxUnavailable: 0  # Number of pods that can be unavailable during the update
+  replicas: 3
   selector:
     matchLabels:
       app: storage-space-api
@@ -18,14 +31,10 @@ spec:
     metadata:
       labels:
         app: storage-space-api
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/path: "/metrics"
-        prometheus.io/port: "5000"
     spec:
       containers:
-      - name: storage-space-api
-        image: ${DOCKER_REGISTRY}/storage-space-api:${IMAGE_TAG}
+      - name: api
+        image: ${DOCKERHUB_USERNAME}/storage-space:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
@@ -34,40 +43,39 @@ spec:
           valueFrom:
             secretKeyRef:
               name: storage-space-secrets
-              key: database-url
+              key: DATABASE_URL
         - name: SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: storage-space-secrets
-              key: secret-key
-        - name: PORT
-          value: "5000"
+              key: SECRET_KEY
+        - name: ENVIRONMENT
+          value: "production"
         resources:
           limits:
             cpu: "1"
             memory: "512Mi"
           requests:
-            cpu: "0.5"
+            cpu: "500m"
             memory: "256Mi"
         readinessProbe:
           httpGet:
             path: /api/health
             port: 5000
-          initialDelaySeconds: 5
-          periodSeconds: 10
+          initialDelaySeconds: 10
+          periodSeconds: 5
         livenessProbe:
           httpGet:
             path: /api/health
             port: 5000
           initialDelaySeconds: 15
-          periodSeconds: 20
+          periodSeconds: 10
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: storage-space-api
-  labels:
-    app: storage-space-api
+  namespace: storage-space
 spec:
   selector:
     app: storage-space-api
@@ -79,19 +87,18 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: storage-space-api-ingress
+  name: storage-space-ingress
+  namespace: storage-space
   annotations:
     kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
 spec:
   tls:
   - hosts:
-    - api.storage-space.example.com
+    - ${YOUR_DOMAIN_HERE}
     secretName: storage-space-tls
   rules:
-  - host: api.storage-space.example.com
+  - host: ${YOUR_DOMAIN_HERE}
     http:
       paths:
       - path: /
@@ -101,3 +108,30 @@ spec:
             name: storage-space-api
             port:
               number: 80
+---
+# Horizontal Pod Autoscaler for dynamic scaling
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: storage-space-hpa
+  namespace: storage-space
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: storage-space-api
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

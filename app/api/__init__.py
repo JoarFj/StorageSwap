@@ -1,1 +1,1 @@
-# API package initialization
+# Init file for API package

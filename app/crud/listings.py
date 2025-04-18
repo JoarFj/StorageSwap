@@ -1,11 +1,10 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import or_, and_
+from sqlalchemy import or_, func, asc, desc
 from fastapi import HTTPException, status
-from typing import Optional, List, Dict, Any
-import math
+from typing import Optional, List
 
-from app.models.models import Listing, User
+from app.models.models import Listing
 from app.schemas.listings import ListingCreate, ListingUpdate, ListingFilters
 
 def get_listing(db: Session, listing_id: int) -> Optional[Listing]:
@@ -16,78 +15,62 @@ def get_listings_by_host(db: Session, host_id: int) -> List[Listing]:
     """Get all listings by a specific host"""
     return db.query(Listing).filter(Listing.host_id == host_id).all()
 
-def get_listings(db: Session, filters: Optional[ListingFilters] = None) -> List[Listing]:
+def get_listings(db: Session, filters: Optional[ListingFilters] = None, skip: int = 0, limit: int = 100) -> List[Listing]:
     """Get listings with optional filters"""
-    query = db.query(Listing)
+    query = db.query(Listing).filter(Listing.is_active == True)
     
     if filters:
-        # Apply location filter (city or state)
+        # Location filter (city, state, or zip)
         if filters.location:
             query = query.filter(
                 or_(
                     Listing.city.ilike(f"%{filters.location}%"),
                     Listing.state.ilike(f"%{filters.location}%"),
-                    Listing.address.ilike(f"%{filters.location}%")
+                    Listing.zip_code.ilike(f"%{filters.location}%")
                 )
             )
         
-        # Apply space type filter
+        # Space type filter
         if filters.space_type:
             query = query.filter(Listing.space_type == filters.space_type)
         
-        # Apply price range filters
+        # Price range filters
         if filters.min_price is not None:
             query = query.filter(Listing.price_per_month >= filters.min_price)
         if filters.max_price is not None:
             query = query.filter(Listing.price_per_month <= filters.max_price)
         
-        # Apply size range filters
+        # Size range filters
         if filters.min_size is not None:
             query = query.filter(Listing.size >= filters.min_size)
         if filters.max_size is not None:
             query = query.filter(Listing.size <= filters.max_size)
         
-        # Apply geolocation radius filter
-        if filters.latitude is not None and filters.longitude is not None and filters.radius is not None:
-            # TODO: Implement proper geospatial filtering
-            # This is a simplified approach for demo purposes
-            # For production, consider using PostGIS or a specialized geospatial solution
-            
-            # Convert radius from miles to degrees (approximate)
-            lat_radius = filters.radius / 69.0  # 1 degree lat is approximately 69 miles
-            lon_radius = filters.radius / (69.0 * math.cos(filters.latitude * (math.pi / 180)))
-            
-            query = query.filter(
-                and_(
-                    Listing.latitude.between(filters.latitude - lat_radius, filters.latitude + lat_radius),
-                    Listing.longitude.between(filters.longitude - lon_radius, filters.longitude + lon_radius)
+        # Proximity search (if latitude, longitude, and radius are provided)
+        if all([filters.latitude, filters.longitude, filters.radius]):
+            # Calculate distance in miles (approximate)
+            # Using Haversine formula via SQL
+            earth_radius_miles = 3959  # Earth radius in miles
+            distance = (
+                earth_radius_miles * 
+                func.acos(
+                    func.cos(func.radians(filters.latitude)) * 
+                    func.cos(func.radians(Listing.latitude)) * 
+                    func.cos(func.radians(Listing.longitude) - func.radians(filters.longitude)) + 
+                    func.sin(func.radians(filters.latitude)) * 
+                    func.sin(func.radians(Listing.latitude))
                 )
             )
+            query = query.filter(distance <= filters.radius)
+            # Sort by distance
+            query = query.order_by(asc(distance))
     
-    return query.all()
+    # Apply pagination
+    return query.offset(skip).limit(limit).all()
 
 def create_listing(db: Session, listing: ListingCreate, host_id: int) -> Listing:
     """Create a new listing"""
-    # Ensure the host exists
-    host = db.query(User).filter(User.id == host_id).first()
-    if not host:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Host not found"
-        )
-
-    # Ensure the host has is_host set to True
-    if not host.is_host:
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="User is not registered as a host"
-        )
-    
-    # Create new listing
-    db_listing = Listing(
-        host_id=host_id,
-        **listing.model_dump()
-    )
+    db_listing = Listing(**listing.model_dump(), host_id=host_id)
     
     try:
         db.add(db_listing)
@@ -104,23 +87,22 @@ def create_listing(db: Session, listing: ListingCreate, host_id: int) -> Listing
 def update_listing(db: Session, listing_id: int, listing_update: ListingUpdate, user_id: int) -> Listing:
     """Update a listing"""
     db_listing = get_listing(db, listing_id)
-    
-    if not db_listing:
+    if db_listing is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Listing not found"
         )
     
-    # Ensure the user is the owner of the listing
+    # Verify ownership or admin permission
     if db_listing.host_id != user_id:
+        # This check is a backup; routes should already enforce this
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to update this listing"
         )
     
-    # Update listing fields if they are provided
+    # Update listing data
     update_data = listing_update.model_dump(exclude_unset=True)
-    
     for key, value in update_data.items():
         setattr(db_listing, key, value)
     
@@ -138,15 +120,15 @@ def update_listing(db: Session, listing_id: int, listing_update: ListingUpdate, 
 def delete_listing(db: Session, listing_id: int, user_id: int) -> bool:
     """Delete a listing"""
     db_listing = get_listing(db, listing_id)
-    
-    if not db_listing:
+    if db_listing is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Listing not found"
         )
     
-    # Ensure the user is the owner of the listing
+    # Verify ownership or admin permission
     if db_listing.host_id != user_id:
+        # This check is a backup; routes should already enforce this
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Not authorized to delete this listing"
@@ -160,5 +142,5 @@ def delete_listing(db: Session, listing_id: int, user_id: int) -> bool:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Could not delete listing: {str(e)}"
+            detail=f"Error deleting listing: {str(e)}"
         )

@@ -1,0 +1,6 @@
+app
+attached_assets
+client
+k8s
+migrations
+node_modules
