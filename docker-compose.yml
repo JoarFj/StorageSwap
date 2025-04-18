@@ -2,22 +2,24 @@ version: '3.8'
 
 services:
   api:
-    build: .
-    command: uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
-    volumes:
-      - .:/app
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "5000:5000"
+    volumes:
+      - .:/app
     environment:
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/storage_space
-      - SECRET_KEY=development_secret_key
+      - SECRET_KEY=devsecretkey
     depends_on:
       - db
-    networks:
-      - app-network
+    command: >
+      bash -c "alembic upgrade head &&
+               uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload"
 
   db:
-    image: postgres:14-alpine
+    image: postgres:14
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
@@ -26,12 +28,34 @@ services:
       - POSTGRES_DB=storage_space
     ports:
       - "5432:5432"
-    networks:
-      - app-network
 
-networks:
-  app-network:
-    driver: bridge
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
 
 volumes:
   postgres_data:
+  prometheus_data:
+  grafana_data:
