@@ -494,4 +494,262 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+import { db } from "./db";
+import { eq, like, gte, lte, and, or, sql } from "drizzle-orm";
+
+// DatabaseStorage implementation
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values({
+        ...insertUser,
+        createdAt: new Date()
+      })
+      .returning();
+    return user;
+  }
+
+  async updateUser(id: number, userData: Partial<InsertUser>): Promise<User | undefined> {
+    const [updatedUser] = await db
+      .update(users)
+      .set(userData)
+      .where(eq(users.id, id))
+      .returning();
+    return updatedUser || undefined;
+  }
+
+  async getListing(id: number): Promise<Listing | undefined> {
+    const [listing] = await db.select().from(listings).where(eq(listings.id, id));
+    return listing || undefined;
+  }
+
+  async getListingsByHost(hostId: number): Promise<Listing[]> {
+    return db.select().from(listings).where(eq(listings.hostId, hostId));
+  }
+
+  async getListings(filters?: ListingFilters): Promise<Listing[]> {
+    if (!filters) {
+      return db.select().from(listings);
+    }
+
+    const conditions = [];
+
+    if (filters.spaceType) {
+      conditions.push(eq(listings.spaceType, filters.spaceType));
+    }
+
+    if (filters.location) {
+      conditions.push(
+        or(
+          like(listings.city, `%${filters.location}%`),
+          like(listings.zipCode, `%${filters.location}%`),
+          like(listings.address, `%${filters.location}%`)
+        )
+      );
+    }
+
+    if (filters.minPrice !== undefined) {
+      conditions.push(gte(listings.pricePerMonth, filters.minPrice));
+    }
+
+    if (filters.maxPrice !== undefined) {
+      conditions.push(lte(listings.pricePerMonth, filters.maxPrice));
+    }
+
+    if (filters.minSize !== undefined) {
+      conditions.push(gte(listings.size, filters.minSize));
+    }
+
+    if (filters.maxSize !== undefined) {
+      conditions.push(lte(listings.size, filters.maxSize));
+    }
+
+    // Handle geographic filtering
+    if (filters.latitude !== undefined && filters.longitude !== undefined && filters.radius !== undefined) {
+      // This is a simplified distance calculation that could be improved
+      // with proper geospatial querying
+      const lat = filters.latitude;
+      const lon = filters.longitude;
+      const radius = filters.radius;
+      
+      // Using a simple bounding box for demo purposes
+      const latDiff = radius / 69; // miles to degrees lat (approx)
+      const lonDiff = radius / (69 * Math.cos(lat * (Math.PI / 180))); // miles to degrees lon
+      
+      conditions.push(gte(listings.latitude, lat - latDiff));
+      conditions.push(lte(listings.latitude, lat + latDiff));
+      conditions.push(gte(listings.longitude, lon - lonDiff));
+      conditions.push(lte(listings.longitude, lon + lonDiff));
+    }
+
+    if (conditions.length === 0) {
+      return db.select().from(listings);
+    }
+
+    return db.select().from(listings).where(and(...conditions));
+  }
+
+  async createListing(insertListing: InsertListing): Promise<Listing> {
+    const [listing] = await db
+      .insert(listings)
+      .values({
+        ...insertListing,
+        createdAt: new Date()
+      })
+      .returning();
+    return listing;
+  }
+
+  async updateListing(id: number, listingData: Partial<InsertListing>): Promise<Listing | undefined> {
+    const [updatedListing] = await db
+      .update(listings)
+      .set(listingData)
+      .where(eq(listings.id, id))
+      .returning();
+    return updatedListing || undefined;
+  }
+
+  async deleteListing(id: number): Promise<boolean> {
+    const [deleted] = await db
+      .delete(listings)
+      .where(eq(listings.id, id))
+      .returning({ id: listings.id });
+    return !!deleted;
+  }
+
+  async getBooking(id: number): Promise<Booking | undefined> {
+    const [booking] = await db.select().from(bookings).where(eq(bookings.id, id));
+    return booking || undefined;
+  }
+
+  async getBookingsByListing(listingId: number): Promise<Booking[]> {
+    return db.select().from(bookings).where(eq(bookings.listingId, listingId));
+  }
+
+  async getBookingsByRenter(renterId: number): Promise<Booking[]> {
+    return db.select().from(bookings).where(eq(bookings.renterId, renterId));
+  }
+
+  async getBookingsByHost(hostId: number): Promise<Booking[]> {
+    // Join with listings to get bookings for listings owned by this host
+    return db.select({
+      bookings: bookings
+    })
+    .from(bookings)
+    .innerJoin(listings, eq(bookings.listingId, listings.id))
+    .where(eq(listings.hostId, hostId))
+    .then(rows => rows.map(row => row.bookings));
+  }
+
+  async createBooking(insertBooking: InsertBooking): Promise<Booking> {
+    const [booking] = await db
+      .insert(bookings)
+      .values({
+        ...insertBooking,
+        createdAt: new Date()
+      })
+      .returning();
+    return booking;
+  }
+
+  async updateBooking(id: number, bookingData: Partial<InsertBooking>): Promise<Booking | undefined> {
+    const [updatedBooking] = await db
+      .update(bookings)
+      .set(bookingData)
+      .where(eq(bookings.id, id))
+      .returning();
+    return updatedBooking || undefined;
+  }
+
+  async getReview(id: number): Promise<Review | undefined> {
+    const [review] = await db.select().from(reviews).where(eq(reviews.id, id));
+    return review || undefined;
+  }
+
+  async getReviewsByListing(listingId: number): Promise<Review[]> {
+    return db.select().from(reviews).where(eq(reviews.listingId, listingId));
+  }
+
+  async getReviewsByUser(userId: number): Promise<Review[]> {
+    return db.select().from(reviews).where(eq(reviews.reviewerId, userId));
+  }
+
+  async createReview(insertReview: InsertReview): Promise<Review> {
+    const [review] = await db
+      .insert(reviews)
+      .values({
+        ...insertReview,
+        createdAt: new Date()
+      })
+      .returning();
+    return review;
+  }
+
+  async getMessage(id: number): Promise<Message | undefined> {
+    const [message] = await db.select().from(messages).where(eq(messages.id, id));
+    return message || undefined;
+  }
+
+  async getMessagesBetweenUsers(user1Id: number, user2Id: number): Promise<Message[]> {
+    return db.select().from(messages).where(
+      or(
+        and(
+          eq(messages.senderId, user1Id),
+          eq(messages.receiverId, user2Id)
+        ),
+        and(
+          eq(messages.senderId, user2Id),
+          eq(messages.receiverId, user1Id)
+        )
+      )
+    );
+  }
+
+  async getMessagesByUser(userId: number): Promise<Message[]> {
+    return db.select().from(messages).where(
+      or(
+        eq(messages.senderId, userId),
+        eq(messages.receiverId, userId)
+      )
+    );
+  }
+
+  async createMessage(insertMessage: InsertMessage): Promise<Message> {
+    const [message] = await db
+      .insert(messages)
+      .values({
+        ...insertMessage,
+        createdAt: new Date()
+      })
+      .returning();
+    return message;
+  }
+
+  async markMessageAsRead(id: number): Promise<Message | undefined> {
+    const [updatedMessage] = await db
+      .update(messages)
+      .set({ read: true })
+      .where(eq(messages.id, id))
+      .returning();
+    return updatedMessage || undefined;
+  }
+}
+
+// Use DatabaseStorage instead of MemStorage
+export const storage = new DatabaseStorage();
