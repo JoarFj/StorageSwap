@@ -1,16 +1,19 @@
 from pydantic_settings import BaseSettings
-from typing import Optional, List
-import secrets
 import os
-from dotenv import load_dotenv
+import secrets
+from typing import List, Optional
 
-# Load .env file if it exists
+from dotenv import load_dotenv
 load_dotenv()
 
 class Settings(BaseSettings):
-    # API settings
+    """
+    Application settings configuration.
+    Values are loaded from environment variables and .env files.
+    """
     API_VERSION: str = "1.0.0"
     PROJECT_NAME: str = "P2P Storage Space Marketplace"
+    DESCRIPTION: str = "A peer-to-peer marketplace for renting out personal storage spaces"
     
     # Security settings
     SECRET_KEY: str = os.getenv("SECRET_KEY", secrets.token_urlsafe(32))
@@ -23,11 +26,16 @@ class Settings(BaseSettings):
     # CORS settings
     CORS_ORIGINS: List[str] = ["*"]
     
-    # Monitoring settings
+    # Metrics settings
     METRICS_ENABLED: bool = True
-
+    
+    # Application settings
+    MAX_LISTING_IMAGES: int = 10
+    MAX_IMAGE_SIZE_MB: int = 5
+    
     class Config:
         env_file = ".env"
+        case_sensitive = True
 
-# Create global settings object
+# Create settings instance
 settings = Settings()

@@ -1,19 +1,21 @@
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
-from jose import jwt
+from typing import Optional, Union, Any
+from jose import jwt, JWTError
 from passlib.context import CryptContext
+import secrets
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 
-from app.core.config import settings
 from app.db.database import get_db
+from app.crud import users as users_crud
+from app.core.config import settings
 from app.models.models import User
 
-# Password hashing
+# Password hashing configuration
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# OAuth2 scheme
+# OAuth2 token URL
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/users/login")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
@@ -50,16 +52,17 @@ async def get_current_user(
     )
     
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         user_id: str = payload.get("sub")
         
         if user_id is None:
             raise credentials_exception
-        
-    except jwt.JWTError:
+    except JWTError:
         raise credentials_exception
     
-    user = db.query(User).filter(User.id == int(user_id)).first()
+    user = users_crud.get_user(db=db, user_id=int(user_id))
     
     if user is None:
         raise credentials_exception

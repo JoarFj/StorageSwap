@@ -41,23 +41,16 @@ def create_user(db: Session, user: UserCreate) -> User:
             detail="Email already registered"
         )
     
-    # Check if passwords match
-    if user.password != user.confirm_password:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Passwords do not match"
-        )
-    
-    # Create new user
+    # Create the user
     hashed_password = get_password_hash(user.password)
-    
     db_user = User(
         username=user.username,
         email=user.email,
-        password=hashed_password,
+        hashed_password=hashed_password,
         full_name=user.full_name,
-        bio=user.bio,
         avatar=user.avatar,
+        bio=user.bio,
+        phone=user.phone,
         is_host=user.is_host
     )
     
@@ -66,15 +59,16 @@ def create_user(db: Session, user: UserCreate) -> User:
         db.commit()
         db.refresh(db_user)
         return db_user
-    except IntegrityError:
+    except IntegrityError as e:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not create user due to a database constraint"
+            detail=f"Could not create user: {str(e)}"
         )
 
 def update_user(db: Session, user_id: int, user_update: UserUpdate) -> User:
     """Update a user's information"""
+    # Get the user
     db_user = get_user(db, user_id)
     if not db_user:
         raise HTTPException(
@@ -82,8 +76,22 @@ def update_user(db: Session, user_id: int, user_update: UserUpdate) -> User:
             detail="User not found"
         )
     
-    # Update user fields if they are provided
+    # Update user data
     update_data = user_update.model_dump(exclude_unset=True)
+    
+    # Handle password change separately
+    if 'password' in update_data:
+        hashed_password = get_password_hash(update_data.pop('password'))
+        setattr(db_user, 'hashed_password', hashed_password)
+    
+    # Handle email change (check if new email already exists)
+    if 'email' in update_data and update_data['email'] != db_user.email:
+        existing_user = get_user_by_email(db, update_data['email'])
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered"
+            )
     
     for key, value in update_data.items():
         setattr(db_user, key, value)
@@ -92,11 +100,11 @@ def update_user(db: Session, user_id: int, user_update: UserUpdate) -> User:
         db.commit()
         db.refresh(db_user)
         return db_user
-    except IntegrityError:
+    except IntegrityError as e:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Could not update user due to a database constraint"
+            detail=f"Could not update user: {str(e)}"
         )
 
 def authenticate_user(db: Session, username: str, password: str) -> Optional[User]:
@@ -104,6 +112,6 @@ def authenticate_user(db: Session, username: str, password: str) -> Optional[Use
     user = get_user_by_username(db, username)
     if not user:
         return None
-    if not verify_password(password, user.password):
+    if not verify_password(password, user.hashed_password):
         return None
     return user
