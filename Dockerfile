@@ -5,7 +5,7 @@ FROM node:18-alpine AS frontend-build
 WORKDIR /app
 
 # Copy package.json and install dependencies
-COPY client/package*.json ./
+#COPY client/package*.json ./
 
 RUN npm install
 
