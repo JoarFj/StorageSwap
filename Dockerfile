@@ -4,9 +4,17 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Copy root package files and install dependencies
 COPY package*.json ./
 RUN npm ci
+
+# Copy client package files to client directory
+COPY client/package*.json ./client/
+WORKDIR /app/client
+RUN npm ci
+
+# Return to app root
+WORKDIR /app
 
 # Copy all source files
 COPY . .
@@ -31,9 +39,13 @@ COPY --from=build /app/dist ./dist
 
 # Copy necessary configuration files
 COPY .env* ./
+COPY start.sh ./
 
-# Expose the application port
-EXPOSE 3000
+# Make start script executable
+RUN chmod +x start.sh
 
-# Start the application
+# Expose port for the application
+EXPOSE 5000
+
+# Start the application using Node.js
 CMD ["node", "dist/index.js"]

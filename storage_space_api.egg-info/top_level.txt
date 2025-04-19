@@ -3,4 +3,6 @@ attached_assets
 client
 k8s
 migrations
-node_modules
+run
+tests
+venv

@@ -51,7 +51,11 @@ jobs:
     - name: Run tests
       run: |
         pytest
-  
+    - name: Dump Dockerfile for debugging
+      run: |
+        echo "---- DOCKERFILE ----"
+        head -n 20 Dockerfile
+        echo "--------------------"
   build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
@@ -75,6 +79,7 @@ jobs:
       with:
         context: .
         push: true
+        no-cache: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/storage-space:latest
 
   deploy:
