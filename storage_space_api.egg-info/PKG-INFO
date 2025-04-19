@@ -26,337 +26,212 @@ Requires-Dist: httpx>=0.24.1; extra == "dev"
 
 # P2P Storage Space Marketplace
 
-A peer-to-peer marketplace for renting out personal storage spaces with location-based search and booking functionality.
+A peer-to-peer marketplace for renting out personal storage spaces, built with FastAPI and PostgreSQL.
 
 ## Project Overview
 
-This project consists of:
-1. A React.js frontend built with Vite
-2. A Python FastAPI backend
-3. PostgreSQL database for data persistence
-4. Comprehensive DevOps setup with Docker, Kubernetes, CI/CD, and monitoring
+This application connects people who have unused storage space with those who need storage solutions. The platform facilitates browsing, booking, and managing storage spaces with these key features:
 
-The application allows users to list their unused storage spaces and for others to rent these spaces. It includes features like search filtering, booking management, reviews, and messaging.
+- User authentication and profile management
+- Storage space listing creation and management
+- Advanced search with filtering by location, price, and space type
+- Booking and payment processing
+- Ratings and reviews
+- Messaging between hosts and renters
+- Admin dashboard for platform management
 
-## Tech Stack
-
-### Frontend
-- React with TypeScript
-- Vite for bundling
-- Tailwind CSS & Shadcn UI for styling
-- React Query for data fetching
-- Wouter for routing
+## Technology Stack
 
 ### Backend
-- Python 3.11
-- FastAPI framework
-- SQLAlchemy ORM
-- Pydantic for data validation
-- JWT authentication
-- Prometheus for metrics
+- **FastAPI**: High-performance Python web framework
+- **SQLAlchemy**: SQL toolkit and ORM
+- **Pydantic**: Data validation and settings management
+- **PostgreSQL**: Relational database
+- **Alembic**: Database migration tool
+- **JWT**: Token-based authentication
 
-### Database
-- PostgreSQL
+### DevOps & Infrastructure
+- **Docker**: Containerization
+- **Kubernetes**: Container orchestration
+- **GitHub Actions**: CI/CD pipeline
+- **Prometheus**: Monitoring and metrics
+- **Grafana**: Visualization dashboard
 
-### DevOps
-- Docker & Docker Compose for containerization
-- Kubernetes for container orchestration
-- GitHub Actions for CI/CD pipeline
-- Prometheus & Grafana for monitoring
-- Alembic for database migrations
-
-## Project Structure
+## Application Structure
 
 ```
-.
-├── app/                            # Python FastAPI backend
-│   ├── api/                        # API routes
-│   │   └── routes/                 # API endpoints
-│   ├── core/                       # Core configuration
-│   ├── crud/                       # Database CRUD operations
-│   ├── db/                         # Database setup
-│   ├── models/                     # SQLAlchemy models
-│   ├── schemas/                    # Pydantic schemas
-│   └── main.py                     # FastAPI application entry point
-├── client/                         # React frontend
-│   ├── src/
-│   │   ├── components/             # React components
-│   │   ├── hooks/                  # Custom React hooks
-│   │   ├── lib/                    # Utility functions
-│   │   ├── pages/                  # Page components
-│   │   ├── App.tsx                 # Main App component
-│   │   └── main.tsx                # Frontend entry point
-│   └── index.html                  # HTML template
-├── migrations/                     # Alembic migrations
-├── k8s/                            # Kubernetes configurations
-├── .github/workflows/              # GitHub Actions workflows
-├── docker-compose.yml              # Docker Compose configuration
-├── Dockerfile                      # Docker image configuration
-├── pyproject.toml                  # Python project configuration
-├── prometheus.yml                  # Prometheus configuration
-└── alembic.ini                     # Alembic configuration
+app/
+├── api/                  # API routes and endpoints
+│   └── routes/           # Route handlers
+│       ├── users.py
+│       ├── listings.py
+│       ├── bookings.py
+│       ├── reviews.py
+│       └── messages.py
+├── core/                 # Core functionality
+│   ├── config.py         # Application configuration
+│   └── security.py       # Auth and security
+├── crud/                 # CRUD operations
+│   ├── users.py
+│   ├── listings.py
+│   ├── bookings.py
+│   ├── reviews.py
+│   └── messages.py
+├── db/                   # Database related code
+│   └── database.py       # Database connection
+├── models/               # SQLAlchemy models
+│   └── models.py         # Database models
+├── schemas/              # Pydantic models
+│   ├── users.py
+│   ├── listings.py
+│   ├── bookings.py
+│   ├── reviews.py
+│   └── messages.py
+└── main.py               # Application entry point
+
+migrations/               # Alembic migrations
+Dockerfile                # Container configuration
+docker-compose.yml        # Local Docker setup
+k8s/                      # Kubernetes configuration
+├── deployment.yaml
+├── service.yaml
+└── ingress.yaml
+.github/workflows/        # CI/CD configuration
+├── ci-cd.yml
 ```
 
-## Project Setup and Local Development
+## API Endpoints
+
+### Authentication
+- `POST /api/users/login` - User login
+- `POST /api/users` - User registration
+
+### Users
+- `GET /api/users/me` - Get current user
+- `GET /api/users/{user_id}` - Get user by ID
+- `PUT /api/users/{user_id}` - Update user
+
+### Listings
+- `GET /api/listings` - Get all listings (with filters)
+- `GET /api/listings/{listing_id}` - Get specific listing
+- `POST /api/listings` - Create new listing
+- `PUT /api/listings/{listing_id}` - Update listing
+- `DELETE /api/listings/{listing_id}` - Delete listing
+
+### Bookings
+- `GET /api/bookings` - Get user's bookings
+- `GET /api/bookings/{booking_id}` - Get specific booking
+- `POST /api/bookings` - Create new booking
+- `PUT /api/bookings/{booking_id}` - Update booking
+
+### Reviews
+- `GET /api/reviews` - Get reviews
+- `POST /api/reviews` - Create review
+- `GET /api/listings/{listing_id}/reviews` - Get listing reviews
+
+## Development Setup
 
 ### Prerequisites
 - Python 3.11+
-- Node.js 18+
-- Docker and Docker Compose
-- PostgreSQL (or use the dockerized version)
+- PostgreSQL
+- Docker and Docker Compose (optional)
 
-### Local Development Setup
+### Local Setup
 
-1. **Clone the repository**
-
+1. Clone the repository
 ```bash
-git clone <repository-url>
-cd storage-space-marketplace
+git clone https://github.com/yourusername/storage-space-api.git
+cd storage-space-api
 ```
 
-2. **Set up the backend**
-
+2. Set up virtual environment
 ```bash
-# Create and activate a virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-# Install dependencies
+3. Install dependencies
+```bash
 pip install -e .
 ```
 
-3. **Set up the database**
+4. Set up environment variables (create a `.env` file)
+```
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/storage_space
+SECRET_KEY=your_secret_key_here
+ENVIRONMENT=development
+```
 
+5. Run migrations
 ```bash
-# Using the Docker Compose PostgreSQL instance
-docker-compose up -d db
-
-# Apply database migrations
 alembic upgrade head
 ```
 
-4. **Set up the frontend**
-
+6. Start the server
 ```bash
-cd client
-npm install
+python -m uvicorn app.main:app --host 0.0.0.0 --port 5000 --reload
 ```
 
-5. **Run the application**
-
-```bash
-# Backend
-cd <project-root>
-uvicorn app.main:app --reload --host 0.0.0.0 --port 5000
-
-# Frontend
-cd client
-npm run dev
-```
-
-Alternatively, you can use Docker Compose to run everything:
+## Docker Development
 
 ```bash
 docker-compose up -d
 ```
 
-## Deployment Guide
+This will start:
+- PostgreSQL database
+- FastAPI application
+- Prometheus for monitoring
+- Grafana for visualization
 
-### Option 1: Docker Deployment
+## Deployment
 
-This is the simplest deployment method for a single server.
+### Docker Deployment
 
-1. **Prepare your server**
-
-   Install Docker and Docker Compose on your server:
-
-   ```bash
-   # Update package lists
-   sudo apt update
-
-   # Install required packages
-   sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-
-   # Add Docker's official GPG key
-   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-
-   # Add the Docker repository
-   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-   # Update and install Docker
-   sudo apt update
-   sudo apt install -y docker-ce docker-ce-cli containerd.io
-
-   # Install Docker Compose
-   sudo curl -L "https://github.com/docker/compose/releases/download/v2.10.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-   sudo chmod +x /usr/local/bin/docker-compose
-
-   # Add your user to the docker group to avoid using sudo
-   sudo usermod -aG docker ${USER}
-   ```
-
-2. **Configure environment variables**
-
-   Create a `.env` file in your project root with the following variables:
-
-   ```
-   DATABASE_URL=postgresql://postgres:postgres@db:5432/storage_space
-   SECRET_KEY=your_secure_secret_key_here
-   ```
-
-   Generate a secure secret key:
-
-   ```bash
-   openssl rand -hex 32
-   ```
-
-3. **Configure your domain**
-
-   Update the Nginx configuration in Docker Compose if you're using a custom domain.
-
-4. **Deploy the application**
-
-   ```bash
-   # Clone your repository
-   git clone <repository-url>
-   cd storage-space-marketplace
-
-   # Start the application
-   docker-compose up -d
-   ```
-
-5. **Set up SSL with Certbot**
-
-   If you want to enable HTTPS (recommended for production):
-
-   ```bash
-   # Install Certbot
-   sudo apt install -y certbot python3-certbot-nginx
-
-   # Set up SSL certificate
-   sudo certbot --nginx -d yourdomain.com
-   ```
-
-### Option 2: Kubernetes Deployment
-
-For larger-scale deployments with high availability:
-
-1. **Set up a Kubernetes cluster**
-
-   You can use a managed Kubernetes service like GKE, EKS, or AKS, or set up your own cluster with tools like kubeadm.
-
-2. **Install kubectl and configure access to your cluster**
-
-   Download kubectl and set up your kubeconfig file.
-
-3. **Set up secrets**
-
-   ```bash
-   # Create a secret for the database URL
-   kubectl create secret generic storage-space-secrets \
-     --from-literal=database-url=postgresql://user:password@postgres-host:5432/storage_space \
-     --from-literal=secret-key=your_secure_secret_key
-   ```
-
-4. **Deploy the application**
-
-   ```bash
-   # Apply the Kubernetes configuration
-   kubectl apply -f k8s/deployment.yaml
-   ```
-
-5. **Configure DNS and ingress**
-
-   Set up your domain name to point to your Kubernetes cluster's ingress controller.
-
-### Option 3: CI/CD Deployment with GitHub Actions
-
-For automated deployments:
-
-1. **Set up GitHub repository secrets**
-
-   Go to your GitHub repository → Settings → Secrets and add:
-
-   - `DOCKERHUB_USERNAME`: Your Docker Hub username
-   - `DOCKERHUB_TOKEN`: Your Docker Hub access token
-   - `SSH_PRIVATE_KEY`: Your deployment server's SSH private key
-   - `SSH_HOST`: Your deployment server's hostname or IP
-   - `SSH_USER`: SSH username
-   - `KNOWN_HOSTS`: The target server's SSH known hosts entry
-   - `SECRET_KEY`: Your application secret key
-
-2. **Push to main branch**
-
-   The CI/CD pipeline in `.github/workflows/ci-cd.yml` will:
-   - Run tests
-   - Build and push the Docker image
-   - Deploy to your server
-
-   ```bash
-   git push origin main
-   ```
-
-## Monitoring and Maintenance
-
-### Monitoring with Prometheus and Grafana
-
-The application includes built-in monitoring:
-
-1. Access Prometheus dashboard at: http://your-server:9090
-2. Access Grafana dashboard at: http://your-server:3000 (default credentials: admin/admin)
-
-### Database Migrations
-
-When changing the database schema:
-
+1. Build the Docker image
 ```bash
-# Generate a new migration
-alembic revision --autogenerate -m "Description of changes"
-
-# Apply the migration
-alembic upgrade head
+docker build -t storage-space-api:latest .
 ```
 
-### Backup and Restore
-
-Regularly backup your PostgreSQL database:
-
+2. Run the container
 ```bash
-# Backup
-pg_dump -h localhost -U postgres -d storage_space > backup.sql
-
-# Restore
-psql -h localhost -U postgres -d storage_space < backup.sql
+docker run -d \
+  -p 5000:5000 \
+  -e DATABASE_URL=your_database_url \
+  -e SECRET_KEY=your_secret_key \
+  -e ENVIRONMENT=production \
+  --name storage-space-api \
+  storage-space-api:latest
 ```
 
-## Security Considerations
+### Kubernetes Deployment
 
-1. **Environment Variables**: Never commit sensitive information like API keys or database credentials. Use environment variables or secrets management.
+1. Create Kubernetes secrets
+```bash
+kubectl create secret generic storage-space-secrets \
+  --from-literal=DATABASE_URL=your_database_url \
+  --from-literal=SECRET_KEY=your_secret_key
+```
 
-2. **API Security**: The API uses JWT authentication. Tokens expire after a set period.
+2. Apply Kubernetes configurations
+```bash
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+kubectl apply -f k8s/ingress.yaml
+```
 
-3. **Database Security**: Use strong passwords and consider enabling SSL for database connections.
+### CI/CD Pipeline
 
-4. **Container Security**: Keep Docker images updated and avoid running containers as root.
+The project includes a GitHub Actions workflow that:
+1. Runs tests on each push and pull request
+2. Builds and pushes Docker image on merges to main
+3. Deploys to production environment on successful image build
 
-5. **HTTPS**: Always use HTTPS in production with valid SSL certificates.
+## Monitoring
 
-## Troubleshooting
-
-### Common Issues
-
-1. **Database Connection Failures**
-   - Check if PostgreSQL is running
-   - Verify connection string in environment variables
-   - Ensure network connectivity between application and database
-
-2. **Authentication Issues**
-   - Check if SECRET_KEY is properly set
-   - Verify token expiration settings
-
-3. **Deployment Failures**
-   - Check Docker logs: `docker-compose logs`
-   - For Kubernetes: `kubectl logs deployment/storage-space-api`
+- Access the FastAPI Swagger docs: `http://localhost:5000/api/docs`
+- Prometheus metrics: `http://localhost:5000/metrics`
+- Grafana dashboard: `http://localhost:3000` (if using Docker Compose)
 
 ## License
 
