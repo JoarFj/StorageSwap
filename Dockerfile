@@ -7,7 +7,7 @@ WORKDIR /app
 # Copy package.json and install dependencies
 COPY client/package*.json ./
 
-RUN npm install
+RUN npm ci
 
 
 # Copy the rest of the frontend code
