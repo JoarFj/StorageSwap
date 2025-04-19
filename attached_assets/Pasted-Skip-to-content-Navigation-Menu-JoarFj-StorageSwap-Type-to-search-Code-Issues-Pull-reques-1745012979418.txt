@@ -1,0 +1,249 @@
+Skip to content
+Navigation Menu
+JoarFj
+StorageSwap
+
+Type / to search
+Code
+Issues
+Pull requests
+Actions
+Projects
+Wiki
+Security
+Insights
+Settings
+CI/CD Pipeline
+Update Dockerfile #9
+Jobs
+Run details
+Build and Push Docker Image
+failed 8 minutes ago in 13s
+Search logs
+1s
+1s
+4s
+0s
+5s
+Run docker/build-push-action@v4
+  with:
+    context: .
+    push: true
+    no-cache: true
+    tags: ***/storage-space:latest
+    load: false
+    pull: false
+    github-token: ***
+GitHub Actions runtime token ACs
+  refs/heads/main: read/write
+Docker info
+  /usr/bin/docker version
+  Client: Docker Engine - Community
+   Version:           26.1.3
+   API version:       1.45
+   Go version:        go1.21.10
+   Git commit:        b72abbb
+   Built:             Thu May 16 08:33:35 2024
+   OS/Arch:           linux/amd64
+   Context:           default
+  Server: Docker Engine - Community
+   Engine:
+    Version:          26.1.3
+    API version:      1.45 (minimum version 1.24)
+    Go version:       go1.21.10
+    Git commit:       8e96db1
+    Built:            Thu May 16 08:33:35 2024
+    OS/Arch:          linux/amd64
+    Experimental:     false
+   containerd:
+    Version:          1.7.27
+    GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+   runc:
+    Version:          1.2.5
+    GitCommit:        v1.2.5-0-g59923ef
+   docker-init:
+    Version:          0.19.0
+    GitCommit:        de40ad0
+  /usr/bin/docker info
+  Client: Docker Engine - Community
+   Version:    26.1.3
+   Context:    default
+   Debug Mode: false
+   Plugins:
+    buildx: Docker Buildx (Docker Inc.)
+      Version:  v0.22.0
+      Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+    compose: Docker Compose (Docker Inc.)
+      Version:  v2.27.1
+      Path:     /usr/libexec/docker/cli-plugins/docker-compose
+  Server:
+   Containers: 1
+    Running: 1
+    Paused: 0
+    Stopped: 0
+   Images: 1
+   Server Version: 26.1.3
+   Storage Driver: overlay2
+    Backing Filesystem: extfs
+    Supports d_type: true
+    Using metacopy: false
+    Native Overlay Diff: false
+    userxattr: false
+   Logging Driver: json-file
+   Cgroup Driver: systemd
+   Cgroup Version: 2
+   Plugins:
+    Volume: local
+    Network: bridge host ipvlan macvlan null overlay
+    Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+   Swarm: inactive
+   Runtimes: runc io.containerd.runc.v2
+   Default Runtime: runc
+   Init Binary: docker-init
+   containerd version: 05044ec0a9a75232cad458027ca83437aae3f4da
+   runc version: v1.2.5-0-g59923ef
+   init version: de40ad0
+   Security Options:
+    apparmor
+    seccomp
+     Profile: builtin
+    cgroupns
+   Kernel Version: 6.8.0-1021-azure
+   Operating System: Ubuntu 24.04.2 LTS
+   OSType: linux
+   Architecture: x86_64
+   CPUs: 4
+   Total Memory: 15.62GiB
+   Name: fv-az1718-152
+   ID: 154dfefb-9b2f-4204-b74b-8e8e6bf1256f
+   Docker Root Dir: /var/lib/docker
+   Debug Mode: false
+   Username: ***
+   Experimental: false
+   Insecure Registries:
+    127.0.0.0/8
+   Live Restore Enabled: false
+Proxy configuration
+Buildx version
+  
+/usr/bin/docker buildx build --iidfile /tmp/docker-actions-toolkit-fnY5Qm/iidfile --tag ***/storage-space:latest --metadata-file /tmp/docker-actions-toolkit-fnY5Qm/metadata-file --no-cache --push .
+#0 building with "builder-d202b0dc-862b-4836-b95f-a19643e5068b" instance using docker-container driver
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.27kB done
+#1 DONE 0.0s
+#2 [auth] library/node:pull token for registry-1.docker.io
+#2 DONE 0.0s
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+#4 [internal] load metadata for docker.io/library/node:18-alpine
+#4 DONE 0.4s
+#5 [internal] load metadata for docker.io/library/python:3.11-slim
+#5 DONE 0.4s
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+#7 [internal] load build context
+#7 transferring context: 354.79kB 0.0s done
+#7 DONE 0.1s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 resolve docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b 0.0s done
+#8 sha256:47bbb0afa7fe5695aca89f358dc3e73f46655977e201f553a558b4590b951dac 250B / 250B 0.0s done
+#8 sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 16.20MB / 16.20MB 0.2s done
+#8 sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 3.51MB / 3.51MB 0.2s done
+#8 sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 5.24MB / 28.23MB 0.2s
+#8 sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 28.23MB / 28.23MB 0.3s done
+#8 extracting sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96
+#8 extracting sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 0.9s done
+#8 DONE 1.3s
+#9 [frontend-build 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 resolve docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e 0.0s done
+#9 sha256:25ff2da83641908f65c3a74d80409d6b1b62ccfaab220b9ea70b80df5a2e0549 446B / 446B 0.1s done
+#9 sha256:1e5a4c89cee5c0826c540ab06d4b6b491c96eda01837f430bd47f0d26702d6e3 1.26MB / 1.26MB 0.1s done
+#9 sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e 40.01MB / 40.01MB 0.4s done
+#9 sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 3.64MB / 3.64MB 0.1s done
+#9 extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 0.1s done
+#9 extracting sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e
+#9 ...
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 0.1s done
+#8 DONE 1.4s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e
+#8 ...
+#9 [frontend-build 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 extracting sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e 1.0s done
+#9 DONE 1.6s
+#9 [frontend-build 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 extracting sha256:1e5a4c89cee5c0826c540ab06d4b6b491c96eda01837f430bd47f0d26702d6e3 0.0s done
+#9 extracting sha256:25ff2da83641908f65c3a74d80409d6b1b62ccfaab220b9ea70b80df5a2e0549 done
+#9 DONE 1.7s
+#10 [frontend-build 2/6] WORKDIR /app
+#10 ...
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 0.6s done
+#8 DONE 2.0s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:47bbb0afa7fe5695aca89f358dc3e73f46655977e201f553a558b4590b951dac 0.0s done
+#8 DONE 2.0s
+#11 [backend  2/12] WORKDIR /app
+#11 DONE 0.1s
+#10 [frontend-build 2/6] WORKDIR /app
+#10 DONE 0.5s
+#12 [frontend-build 3/6] COPY client/package*.json ./
+#12 DONE 0.0s
+#13 [backend  3/12] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     libpq-dev     curl     openssl     && apt-get clean     && rm -rf /var/lib/apt/lists/*
+#13 0.111 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#13 0.129 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#13 0.136 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#13 0.198 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#13 0.263 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [512 B]
+#13 0.330 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [255 kB]
+#13 CANCELED
+#14 [frontend-build 4/6] RUN npm install
+#14 0.617 npm error code ENOENT
+#14 0.617 npm error syscall open
+#14 0.618 npm error path /app/package.json
+#14 0.618 npm error errno -2
+#14 0.618 npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/app/package.json'
+#14 0.618 npm error enoent This is related to npm not being able to find a file.
+#14 0.618 npm error enoent
+#14 0.619 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-04-18T21_41_12_512Z-debug-0.log
+#14 ERROR: process "/bin/sh -c npm install" did not complete successfully: exit code: 254
+------
+ > [frontend-build 4/6] RUN npm install:
+0.617 npm error code ENOENT
+0.617 npm error syscall open
+0.618 npm error path /app/package.json
+0.618 npm error errno -2
+0.618 npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/app/package.json'
+0.618 npm error enoent This is related to npm not being able to find a file.
+0.618 npm error enoent
+0.619 npm error A complete log of this run can be found in: /root/.npm/_logs/2025-04-18T21_41_12_512Z-debug-0.log
+------
+Dockerfile:10
+--------------------
+   8 |     COPY client/package*.json ./
+   9 |     
+  10 | >>> RUN npm install
+  11 |     
+  12 |     
+--------------------
+ERROR: failed to solve: process "/bin/sh -c npm install" did not complete successfully: exit code: 254
+Error: buildx failed with: ERROR: failed to solve: process "/bin/sh -c npm install" did not complete successfully: exit code: 254
+0s
+Post job cleanup.
+Removing temp folder /tmp/docker-actions-toolkit-fnY5Qm
+  
+0s
+Post job cleanup.
+/usr/bin/docker logout 
+Removing login credentials for https://index.docker.io/v1/
+1s
+Post job cleanup.
+Removing builder
+  /usr/bin/docker buildx rm builder-d202b0dc-862b-4836-b95f-a19643e5068b
+  builder-d202b0dc-862b-4836-b95f-a19643e5068b removed
+Cleaning up certificates
+  
+0s
+0s
