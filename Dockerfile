@@ -1,59 +1,39 @@
-# Multi-stage build for Python FastAPI backend and React frontend
+# Node.js application with frontend and backend
 
-# Stage 1: Frontend build
-FROM node:18-alpine AS frontend-build
+# Build stage
+FROM node:18-alpine AS build
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY client/package*.json ./
+# Copy package files and install dependencies
+COPY package*.json ./
 RUN npm ci
 
-# Copy the rest of the frontend code
-COPY client/ ./
+# Copy all source files
+COPY . .
 
-# Build the frontend
+# Build frontend and backend
 RUN npm run build
 
-# Stage 2: Backend build
-FROM python:3.11-slim AS backend
-
-# Set working directory
+# Production stage
+FROM node:18-alpine AS production
 WORKDIR /app
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    TZ=UTC \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV NODE_ENV=production \
+    TZ=UTC
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    curl \
-    openssl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Copy package files and install production dependencies only
+COPY package*.json ./
+RUN npm ci --only=production
 
-# Install Python dependencies
-COPY pyproject.toml ./
-RUN pip install --no-cache-dir . gunicorn
+# Copy built files from build stage
+COPY --from=build /app/dist ./dist
 
-# Copy backend code
-COPY app/ ./app/
-COPY migrations/ ./migrations/
-COPY alembic.ini .
-COPY start.sh .
-COPY prometheus.yml .
+# Copy necessary configuration files
+COPY .env* ./
 
-# Copy built frontend from stage 1
-COPY --from=frontend-build /app/dist ./static
+# Expose the application port
+EXPOSE 3000
 
-# Make start script executable
-RUN chmod +x start.sh
-
-# Expose port
-EXPOSE 5000
-
-# Set entrypoint to startup script
-ENTRYPOINT ["./start.sh"]
+# Start the application
+CMD ["node", "dist/index.js"]
