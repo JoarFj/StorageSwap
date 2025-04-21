@@ -6,7 +6,7 @@ import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import { insertListingSchema } from "@shared/schema";
+import { insertListingSchema } from "../../../../shared/schema";
 import { Button } from "@/components/ui/button";
 import {
   Form,
