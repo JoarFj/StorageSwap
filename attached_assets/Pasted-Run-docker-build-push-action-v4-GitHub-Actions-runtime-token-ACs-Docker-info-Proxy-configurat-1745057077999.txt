@@ -1,0 +1,131 @@
+Run docker/build-push-action@v4
+  
+GitHub Actions runtime token ACs
+Docker info
+Proxy configuration
+Buildx version
+  /usr/bin/docker buildx version
+  github.com/docker/buildx v0.22.0 18ccba072076ddbfb0aeedd6746d7719b0729b58
+  
+/usr/bin/docker buildx build --iidfile /tmp/docker-actions-toolkit-jO45pQ/iidfile --tag ***/storage-space:latest --metadata-file /tmp/docker-actions-toolkit-jO45pQ/metadata-file --no-cache --push .
+#0 building with "builder-3fe4fab8-84c2-491a-bae9-2a3126ecbfca" instance using docker-container driver
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.27kB done
+#1 DONE 0.0s
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+#4 [auth] library/node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+#5 [internal] load metadata for docker.io/library/node:18-alpine
+#5 DONE 0.9s
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 1.0s
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+#7 [frontend-build 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#7 resolve docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e done
+#7 DONE 0.1s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 resolve docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b 0.0s done
+#8 ...
+#9 [internal] load build context
+#9 transferring context: 354.99kB 0.0s done
+#9 DONE 0.1s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 sha256:47bbb0afa7fe5695aca89f358dc3e73f46655977e201f553a558b4590b951dac 250B / 250B 0.1s done
+#8 sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 1.05MB / 16.20MB 0.2s
+#8 sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 16.20MB / 16.20MB 0.3s done
+#8 sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 3.51MB / 3.51MB 0.2s done
+#8 sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 28.23MB / 28.23MB 0.3s done
+#8 extracting sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96
+#8 extracting sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 0.8s done
+#8 DONE 1.5s
+#7 [frontend-build 1/6] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#7 sha256:25ff2da83641908f65c3a74d80409d6b1b62ccfaab220b9ea70b80df5a2e0549 446B / 446B 0.1s done
+#7 sha256:1e5a4c89cee5c0826c540ab06d4b6b491c96eda01837f430bd47f0d26702d6e3 1.26MB / 1.26MB 0.1s done
+#7 sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e 40.01MB / 40.01MB 0.4s done
+#7 sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 3.64MB / 3.64MB 0.2s done
+#7 extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 0.1s done
+#7 extracting sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e
+#7 extracting sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e 1.0s done
+#7 extracting sha256:1e5a4c89cee5c0826c540ab06d4b6b491c96eda01837f430bd47f0d26702d6e3 0.0s done
+#7 extracting sha256:25ff2da83641908f65c3a74d80409d6b1b62ccfaab220b9ea70b80df5a2e0549 done
+#7 DONE 1.5s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9
+#8 extracting sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 0.2s done
+#8 DONE 1.7s
+#10 [frontend-build 2/6] WORKDIR /app
+#10 DONE 0.4s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e
+#8 ...
+#11 [frontend-build 3/6] COPY client/package*.json ./
+#11 DONE 0.0s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 0.5s done
+#8 DONE 2.2s
+#12 [frontend-build 4/6] RUN npm install
+#12 ...
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:47bbb0afa7fe5695aca89f358dc3e73f46655977e201f553a558b4590b951dac done
+#8 DONE 2.2s
+#13 [backend  2/12] WORKDIR /app
+#13 DONE 0.0s
+#14 [backend  3/12] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     libpq-dev     curl     openssl     && apt-get clean     && rm -rf /var/lib/apt/lists/*
+#14 0.090 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#14 0.099 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#14 0.100 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#14 0.157 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#14 0.218 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [512 B]
+#14 0.274 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [255 kB]
+#14 ...
+#12 [frontend-build 4/6] RUN npm install
+#12 0.640 
+#12 0.640 up to date, audited 1 package in 483ms
+#12 0.642 
+#12 0.642 found 0 vulnerabilities
+#12 DONE 0.7s
+#15 [frontend-build 5/6] COPY client/ ./
+#15 DONE 0.0s
+#16 [frontend-build 6/6] RUN npm run build
+#16 0.213 
+#16 0.213 > storageswap-client@1.0.0 build
+#16 0.213 > echo "No real build script yet"
+#16 0.213 
+#16 0.217 No real build script yet
+#16 DONE 0.2s
+#17 [backend  9/12] COPY start.sh .
+#17 CACHED
+#18 [backend  4/12] COPY pyproject.toml ./
+#18 CACHED
+#19 [backend  5/12] RUN pip install --no-cache-dir . gunicorn
+#19 CACHED
+#20 [backend  7/12] COPY migrations/ ./migrations/
+#20 CACHED
+#21 [backend  6/12] COPY app/ ./app/
+#21 CACHED
+#22 [backend  8/12] COPY alembic.ini .
+#22 CACHED
+#23 [backend 10/12] COPY prometheus.yml .
+#23 CACHED
+#24 [backend 11/12] COPY --from=frontend-build /app/dist ./static
+#24 ERROR: failed to calculate checksum of ref jiqz75ktludr2im94ihpfdkuz::fo05ar6u62367ssxwplp78em1: "/app/dist": not found
+#14 [backend  3/12] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     libpq-dev     curl     openssl     && apt-get clean     && rm -rf /var/lib/apt/lists/*
+#14 CANCELED
+------
+ > [backend 11/12] COPY --from=frontend-build /app/dist ./static:
+------
+Dockerfile:52
+--------------------
+  50 |     
+  51 |     # Copy built frontend from stage 1
+  52 | >>> COPY --from=frontend-build /app/dist ./static
+  53 |     
+  54 |     # Make start script executable
+--------------------
+ERROR: failed to solve: failed to compute cache key: failed to calculate checksum of ref jiqz75ktludr2im94ihpfdkuz::fo05ar6u62367ssxwplp78em1: "/app/dist": not found
+Error: buildx failed with: ERROR: failed to solve: failed to compute cache key: failed to calculate checksum of ref jiqz75ktludr2im94ihpfdkuz::fo05ar6u62367ssxwplp78em1: "/app/dist": not found

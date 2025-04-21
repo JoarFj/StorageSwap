@@ -1,61 +1,51 @@
-# Multi-stage build for Python FastAPI backend and React frontend
+# Node.js application with frontend and backend
 
-# Stage 1: Frontend build
-FROM node:18-alpine AS frontend-build
+# Build stage
+FROM node:18-alpine AS build
 WORKDIR /app
 
-# Copy package.json and install dependencies
-COPY client/package*.json ./
-RUN cat package.json
+# Copy root package files and install dependencies
+COPY package*.json ./
 RUN npm ci
 
+# Copy client package files to client directory
+COPY client/package*.json ./client/
+WORKDIR /app/client
+RUN npm ci
 
-# Copy the rest of the frontend code
-COPY client/ ./
+# Return to app root
+WORKDIR /app
 
-# Build the frontend
+# Copy all source files
+COPY . .
+
+# Build frontend and backend
 RUN npm run build
 
-# Stage 2: Backend build
-FROM python:3.11-slim AS backend
-
-# Set working directory
+# Production stage
+FROM node:18-alpine AS production
 WORKDIR /app
 
 # Set environment variables
-ENV PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1 \
-    TZ=UTC \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+ENV NODE_ENV=production \
+    TZ=UTC
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    libpq-dev \
-    curl \
-    openssl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Copy package files and install production dependencies only
+COPY package*.json ./
+RUN npm ci --only=production
 
-# Install Python dependencies
-COPY pyproject.toml ./
-RUN pip install --no-cache-dir . gunicorn
+# Copy built files from build stage
+COPY --from=build /app/dist ./dist
 
-# Copy backend code
-COPY app/ ./app/
-COPY migrations/ ./migrations/
-COPY alembic.ini .
-COPY start.sh .
-COPY prometheus.yml .
-
-# Copy built frontend from stage 1
-COPY --from=frontend-build /app/dist ./static
+# Copy necessary configuration files
+COPY .env* ./
+COPY start.sh ./
 
 # Make start script executable
 RUN chmod +x start.sh
 
-# Expose port
+# Expose port for the application
 EXPOSE 5000
 
-# Set entrypoint to startup script
-ENTRYPOINT ["./start.sh"]
+# Start the application using Node.js
+CMD ["node", "dist/index.js"]

@@ -1,0 +1,540 @@
+Run docker/build-push-action@v4
+  with:
+    context: .
+    push: true
+    no-cache: true
+    tags: ***/storage-space:latest
+    load: false
+    pull: false
+    github-token: ***
+GitHub Actions runtime token ACs
+  refs/heads/main: read/write
+Docker info
+  /usr/bin/docker version
+  Client: Docker Engine - Community
+   Version:           26.1.3
+   API version:       1.45
+   Go version:        go1.21.10
+   Git commit:        b72abbb
+   Built:             Thu May 16 08:33:35 2024
+   OS/Arch:           linux/amd64
+   Context:           default
+  Server: Docker Engine - Community
+   Engine:
+    Version:          26.1.3
+    API version:      1.45 (minimum version 1.24)
+    Go version:       go1.21.10
+    Git commit:       8e96db1
+    Built:            Thu May 16 08:33:35 2024
+    OS/Arch:          linux/amd64
+    Experimental:     false
+   containerd:
+    Version:          1.7.27
+    GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+   runc:
+    Version:          1.2.5
+    GitCommit:        v1.2.5-0-g59923ef
+   docker-init:
+    Version:          0.19.0
+    GitCommit:        de40ad0
+  /usr/bin/docker info
+  Client: Docker Engine - Community
+   Version:    26.1.3
+   Context:    default
+   Debug Mode: false
+   Plugins:
+    buildx: Docker Buildx (Docker Inc.)
+      Version:  v0.22.0
+      Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+    compose: Docker Compose (Docker Inc.)
+      Version:  v2.27.1
+      Path:     /usr/libexec/docker/cli-plugins/docker-compose
+  Server:
+   Containers: 1
+    Running: 1
+    Paused: 0
+    Stopped: 0
+   Images: 1
+   Server Version: 26.1.3
+   Storage Driver: overlay2
+    Backing Filesystem: extfs
+    Supports d_type: true
+    Using metacopy: false
+    Native Overlay Diff: false
+    userxattr: false
+   Logging Driver: json-file
+   Cgroup Driver: systemd
+   Cgroup Version: 2
+   Plugins:
+    Volume: local
+    Network: bridge host ipvlan macvlan null overlay
+    Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+   Swarm: inactive
+   Runtimes: io.containerd.runc.v2 runc
+   Default Runtime: runc
+   Init Binary: docker-init
+   containerd version: 05044ec0a9a75232cad458027ca83437aae3f4da
+   runc version: v1.2.5-0-g59923ef
+   init version: de40ad0
+   Security Options:
+    apparmor
+    seccomp
+     Profile: builtin
+    cgroupns
+   Kernel Version: 6.8.0-1021-azure
+   Operating System: Ubuntu 24.04.2 LTS
+   OSType: linux
+   Architecture: x86_64
+   CPUs: 4
+   Total Memory: 15.62GiB
+   Name: fv-az1055-594
+   ID: 154dfefb-9b2f-4204-b74b-8e8e6bf1256f
+   Docker Root Dir: /var/lib/docker
+   Debug Mode: false
+   Username: ***
+   Experimental: false
+   Insecure Registries:
+    127.0.0.0/8
+   Live Restore Enabled: false
+Proxy configuration
+  No proxy configuration found
+  
+Buildx version
+  
+/usr/bin/docker buildx build --iidfile /tmp/docker-actions-toolkit-A1t1jz/iidfile --tag ***/storage-space:latest --metadata-file /tmp/docker-actions-toolkit-A1t1jz/metadata-file --no-cache --push .
+#0 building with "builder-503f7d38-70ac-460a-b5f1-2c875c85435c" instance using docker-container driver
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 1.28kB done
+#1 DONE 0.0s
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 ...
+#3 [auth] library/python:pull token for registry-1.docker.io
+#3 DONE 0.0s
+#4 [auth] library/node:pull token for registry-1.docker.io
+#4 DONE 0.0s
+#5 [internal] load metadata for docker.io/library/node:18-alpine
+#5 ...
+#2 [internal] load metadata for docker.io/library/python:3.11-slim
+#2 DONE 0.9s
+#5 [internal] load metadata for docker.io/library/node:18-alpine
+#5 DONE 0.9s
+#6 [internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+#7 [internal] load build context
+#7 transferring context: 498.63kB 0.0s done
+#7 DONE 0.1s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 resolve docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b 0.0s done
+#8 sha256:47bbb0afa7fe5695aca89f358dc3e73f46655977e201f553a558b4590b951dac 250B / 250B 0.1s done
+#8 sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 0B / 16.20MB 0.2s
+#8 sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 0B / 3.51MB 0.2s
+#8 sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 0B / 28.23MB 0.2s
+#8 sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 16.20MB / 16.20MB 0.3s done
+#8 sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 3.51MB / 3.51MB 0.3s done
+#8 sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 28.23MB / 28.23MB 0.6s done
+#8 ...
+#9 [frontend-build 1/7] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 resolve docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e 0.0s done
+#9 sha256:25ff2da83641908f65c3a74d80409d6b1b62ccfaab220b9ea70b80df5a2e0549 446B / 446B 0.2s done
+#9 sha256:1e5a4c89cee5c0826c540ab06d4b6b491c96eda01837f430bd47f0d26702d6e3 1.26MB / 1.26MB 0.1s done
+#9 sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e 40.01MB / 40.01MB 0.4s done
+#9 sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 3.64MB / 3.64MB 0.3s done
+#9 extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 0.1s done
+#9 DONE 0.8s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96
+#8 extracting sha256:8a628cdd7ccc83e90e5a95888fcb0ec24b991141176c515ad101f12d6433eb96 0.9s done
+#8 DONE 1.6s
+#9 [frontend-build 1/7] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 extracting sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e
+#9 ...
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:2a47a8c4fd5c358f98fb193471dc5d7a1e75e33d480fb7a25a7130840a8769d9 0.1s done
+#8 DONE 1.7s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e
+#8 ...
+#9 [frontend-build 1/7] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 extracting sha256:dd71dde834b5c203d162902e6b8994cb2309ae049a0eabc4efea161b2b5a3d0e 1.0s done
+#9 DONE 1.8s
+#9 [frontend-build 1/7] FROM docker.io/library/node:18-alpine@sha256:8d6421d663b4c28fd3ebc498332f249011d118945588d0a35cb9bc4b8ca09d9e
+#9 extracting sha256:1e5a4c89cee5c0826c540ab06d4b6b491c96eda01837f430bd47f0d26702d6e3 0.0s done
+#9 extracting sha256:25ff2da83641908f65c3a74d80409d6b1b62ccfaab220b9ea70b80df5a2e0549 done
+#9 DONE 1.9s
+#10 [frontend-build 2/7] WORKDIR /app
+#10 DONE 0.5s
+#8 [backend  1/12] FROM docker.io/library/python:3.11-slim@sha256:82c07f2f6e35255b92eb16f38dbd22679d5e8fb523064138d7c6468e7bf0c15b
+#8 extracting sha256:9c538fc354918cfe13231798fe17d7c4b463cda38500187c0ecedcc061d6129e 0.6s done
+#8 extracting sha256:47bbb0afa7fe5695aca89f358dc3e73f46655977e201f553a558b4590b951dac 0.1s done
+#8 DONE 2.3s
+#11 [backend  2/12] WORKDIR /app
+#11 DONE 0.1s
+#12 [frontend-build 3/7] COPY client/package*.json ./
+#12 DONE 0.0s
+#13 [frontend-build 4/7] RUN cat package.json
+#13 0.046 {
+#13 0.046   "name": "storageswap-client",
+#13 0.046   "version": "1.0.0",
+#13 0.046   "private": true,
+#13 0.046   "scripts": {
+#13 0.046     "dev": "vite",
+#13 0.046     "build": "vite build",
+#13 0.046     "serve": "vite preview"
+#13 0.046   },
+#13 0.046   "dependencies": {
+#13 0.046     "@radix-ui/react-separator": "^1.1.4",
+#13 0.046     "@radix-ui/react-tabs": "^1.1.7",
+#13 0.046     "@radix-ui/react-toast": "^1.2.10",
+#13 0.046     "@radix-ui/react-tooltip": "^1.2.3",
+#13 0.046     "@tanstack/react-query": "^5.74.4",
+#13 0.046     "class-variance-authority": "^0.7.1",
+#13 0.046     "lucide-react": "^0.501.0",
+#13 0.046     "next-themes": "^0.4.6",
+#13 0.046     "react": "^18.2.0",
+#13 0.046     "react-dom": "^18.2.0",
+#13 0.046     "react-helmet": "^6.1.0",
+#13 0.046     "react-icons": "^5.5.0",
+#13 0.046     "react-query": "^3.39.3",
+#13 0.046     "tailwind-merge": "^3.2.0",
+#13 0.046     "wouter": "^3.7.0"
+#13 0.046   },
+#13 0.046   "devDependencies": {
+#13 0.046     "@vitejs/plugin-react": "^4.0.0",
+#13 0.046     "autoprefixer": "^10.4.14",
+#13 0.046     "postcss": "^8.4.24",
+#13 0.046     "tailwindcss": "^3.3.2",
+#13 0.046     "vite": "^5.4.18"
+#13 0.046   }
+#13 0.046 }
+#13 DONE 0.1s
+#14 [backend  3/12] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     libpq-dev     curl     openssl     && apt-get clean     && rm -rf /var/lib/apt/lists/*
+#14 0.153 Get:1 http://deb.debian.org/debian bookworm InRelease [151 kB]
+#14 0.178 Get:2 http://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+#14 0.194 Get:3 http://deb.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+#14 0.243 Get:4 http://deb.debian.org/debian bookworm/main amd64 Packages [8792 kB]
+#14 0.327 Get:5 http://deb.debian.org/debian bookworm-updates/main amd64 Packages [512 B]
+#14 0.343 Get:6 http://deb.debian.org/debian-security bookworm-security/main amd64 Packages [255 kB]
+#14 1.125 Fetched 9303 kB in 1s (8911 kB/s)
+#14 1.125 Reading package lists...
+#14 1.609 Reading package lists...
+#14 2.122 Building dependency tree...
+#14 2.245 Reading state information...
+#14 2.354 openssl is already the newest version (3.0.15-1~deb12u1).
+#14 2.354 openssl set to manually installed.
+#14 2.354 The following additional packages will be installed:
+#14 2.354   binutils binutils-common binutils-x86-64-linux-gnu bzip2 cpp cpp-12 dpkg-dev
+#14 2.354   g++ g++-12 gcc gcc-12 libasan8 libatomic1 libbinutils libbrotli1
+#14 2.354   libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libcurl4
+#14 2.354   libdpkg-perl libgcc-12-dev libgdbm-compat4 libgomp1 libgprofng0 libisl23
+#14 2.354   libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3 libmpfr6 libnghttp2-14
+#14 2.354   libnsl-dev libperl5.36 libpq5 libpsl5 libquadmath0 librtmp1 libsasl2-2
+#14 2.354   libsasl2-modules-db libssh2-1 libssl-dev libstdc++-12-dev libtirpc-dev
+#14 2.355   libtsan2 libubsan1 linux-libc-dev make patch perl perl-base
+#14 2.355   perl-modules-5.36 rpcsvc-proto xz-utils
+#14 2.356 Suggested packages:
+#14 2.356   binutils-doc bzip2-doc cpp-doc gcc-12-locales cpp-12-doc debian-keyring
+#14 2.356   g++-multilib g++-12-multilib gcc-12-doc gcc-multilib manpages-dev autoconf
+#14 2.356   automake libtool flex bison gdb gcc-doc gcc-12-multilib glibc-doc gnupg | sq
+#14 2.356   | sqop | pgpainless-cli sensible-utils git bzr postgresql-doc-15 libssl-doc
+#14 2.356   libstdc++-12-doc make-doc ed diffutils-doc perl-doc
+#14 2.356   libterm-readline-gnu-perl | libterm-readline-perl-perl
+#14 2.356   libtap-harness-archive-perl
+#14 2.356 Recommended packages:
+#14 2.356   fakeroot gnupg | sq | sqop | pgpainless-cli libalgorithm-merge-perl manpages
+#14 2.356   manpages-dev libc-devtools libfile-fcntllock-perl liblocale-gettext-perl
+#14 2.356   libldap-common publicsuffix libsasl2-modules
+#14 2.647 The following NEW packages will be installed:
+#14 2.647   binutils binutils-common binutils-x86-64-linux-gnu build-essential bzip2 cpp
+#14 2.647   cpp-12 curl dpkg-dev g++ g++-12 gcc gcc-12 libasan8 libatomic1 libbinutils
+#14 2.649   libbrotli1 libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0
+#14 2.649   libctf0 libcurl4 libdpkg-perl libgcc-12-dev libgdbm-compat4 libgomp1
+#14 2.649   libgprofng0 libisl23 libitm1 libjansson4 libldap-2.5-0 liblsan0 libmpc3
+#14 2.649   libmpfr6 libnghttp2-14 libnsl-dev libperl5.36 libpq-dev libpq5 libpsl5
+#14 2.649   libquadmath0 librtmp1 libsasl2-2 libsasl2-modules-db libssh2-1 libssl-dev
+#14 2.649   libstdc++-12-dev libtirpc-dev libtsan2 libubsan1 linux-libc-dev make patch
+#14 2.649   perl perl-modules-5.36 rpcsvc-proto xz-utils
+#14 2.649 The following packages will be upgraded:
+#14 2.649   perl-base
+#14 2.700 1 upgraded, 59 newly installed, 0 to remove and 0 not upgraded.
+#14 2.700 Need to get 79.5 MB of archives.
+#14 2.700 After this operation, 332 MB of additional disk space will be used.
+#14 2.700 Get:1 http://deb.debian.org/debian-security bookworm-security/main amd64 perl-base amd64 5.36.0-7+deb12u2 [1609 kB]
+#14 2.754 Get:2 http://deb.debian.org/debian-security bookworm-security/main amd64 perl-modules-5.36 all 5.36.0-7+deb12u2 [2815 kB]
+#14 2.770 Get:3 http://deb.debian.org/debian bookworm/main amd64 libgdbm-compat4 amd64 1.23-3 [48.2 kB]
+#14 2.771 Get:4 http://deb.debian.org/debian-security bookworm-security/main amd64 libperl5.36 amd64 5.36.0-7+deb12u2 [4207 kB]
+#14 2.785 Get:5 http://deb.debian.org/debian-security bookworm-security/main amd64 perl amd64 5.36.0-7+deb12u2 [239 kB]
+#14 2.786 Get:6 http://deb.debian.org/debian bookworm/main amd64 bzip2 amd64 1.0.8-5+b1 [49.8 kB]
+#14 2.787 Get:7 http://deb.debian.org/debian-security bookworm-security/main amd64 xz-utils amd64 5.4.1-1 [471 kB]
+#14 2.789 Get:8 http://deb.debian.org/debian bookworm/main amd64 binutils-common amd64 2.40-2 [2487 kB]
+#14 2.805 Get:9 http://deb.debian.org/debian bookworm/main amd64 libbinutils amd64 2.40-2 [572 kB]
+#14 2.809 Get:10 http://deb.debian.org/debian bookworm/main amd64 libctf-nobfd0 amd64 2.40-2 [153 kB]
+#14 2.810 Get:11 http://deb.debian.org/debian bookworm/main amd64 libctf0 amd64 2.40-2 [89.8 kB]
+#14 2.811 Get:12 http://deb.debian.org/debian bookworm/main amd64 libgprofng0 amd64 2.40-2 [812 kB]
+#14 2.815 Get:13 http://deb.debian.org/debian bookworm/main amd64 libjansson4 amd64 2.14-2 [40.8 kB]
+#14 2.816 Get:14 http://deb.debian.org/debian bookworm/main amd64 binutils-x86-64-linux-gnu amd64 2.40-2 [2246 kB]
+#14 2.828 Get:15 http://deb.debian.org/debian bookworm/main amd64 binutils amd64 2.40-2 [65.0 kB]
+#14 2.829 Get:16 http://deb.debian.org/debian bookworm/main amd64 libc-dev-bin amd64 2.36-9+deb12u10 [47.1 kB]
+#14 2.829 Get:17 http://deb.debian.org/debian-security bookworm-security/main amd64 linux-libc-dev amd64 6.1.133-1 [2126 kB]
+#14 2.836 Get:18 http://deb.debian.org/debian bookworm/main amd64 libcrypt-dev amd64 1:4.4.33-2 [118 kB]
+#14 2.838 Get:19 http://deb.debian.org/debian bookworm/main amd64 libtirpc-dev amd64 1.3.3+ds-1 [191 kB]
+#14 2.839 Get:20 http://deb.debian.org/debian bookworm/main amd64 libnsl-dev amd64 1.3.0-2 [66.4 kB]
+#14 2.840 Get:21 http://deb.debian.org/debian bookworm/main amd64 rpcsvc-proto amd64 1.4.3-1 [63.3 kB]
+#14 2.841 Get:22 http://deb.debian.org/debian bookworm/main amd64 libc6-dev amd64 2.36-9+deb12u10 [1903 kB]
+#14 2.852 Get:23 http://deb.debian.org/debian bookworm/main amd64 libisl23 amd64 0.25-1.1 [683 kB]
+#14 2.855 Get:24 http://deb.debian.org/debian bookworm/main amd64 libmpfr6 amd64 4.2.0-1 [701 kB]
+#14 2.858 Get:25 http://deb.debian.org/debian bookworm/main amd64 libmpc3 amd64 1.3.1-1 [51.5 kB]
+#14 2.863 Get:26 http://deb.debian.org/debian bookworm/main amd64 cpp-12 amd64 12.2.0-14 [9764 kB]
+#14 2.907 Get:27 http://deb.debian.org/debian bookworm/main amd64 cpp amd64 4:12.2.0-3 [6836 B]
+#14 2.908 Get:28 http://deb.debian.org/debian bookworm/main amd64 libcc1-0 amd64 12.2.0-14 [41.7 kB]
+#14 2.910 Get:29 http://deb.debian.org/debian bookworm/main amd64 libgomp1 amd64 12.2.0-14 [116 kB]
+#14 2.910 Get:30 http://deb.debian.org/debian bookworm/main amd64 libitm1 amd64 12.2.0-14 [26.1 kB]
+#14 2.911 Get:31 http://deb.debian.org/debian bookworm/main amd64 libatomic1 amd64 12.2.0-14 [9328 B]
+#14 2.912 Get:32 http://deb.debian.org/debian bookworm/main amd64 libasan8 amd64 12.2.0-14 [2195 kB]
+#14 2.921 Get:33 http://deb.debian.org/debian bookworm/main amd64 liblsan0 amd64 12.2.0-14 [969 kB]
+#14 2.928 Get:34 http://deb.debian.org/debian bookworm/main amd64 libtsan2 amd64 12.2.0-14 [2196 kB]
+#14 2.936 Get:35 http://deb.debian.org/debian bookworm/main amd64 libubsan1 amd64 12.2.0-14 [883 kB]
+#14 2.940 Get:36 http://deb.debian.org/debian bookworm/main amd64 libquadmath0 amd64 12.2.0-14 [144 kB]
+#14 2.970 Get:37 http://deb.debian.org/debian bookworm/main amd64 libgcc-12-dev amd64 12.2.0-14 [2437 kB]
+#14 2.983 Get:38 http://deb.debian.org/debian bookworm/main amd64 gcc-12 amd64 12.2.0-14 [19.3 MB]
+#14 3.088 Get:39 http://deb.debian.org/debian bookworm/main amd64 gcc amd64 4:12.2.0-3 [5216 B]
+#14 3.089 Get:40 http://deb.debian.org/debian bookworm/main amd64 libstdc++-12-dev amd64 12.2.0-14 [2046 kB]
+#14 3.097 Get:41 http://deb.debian.org/debian bookworm/main amd64 g++-12 amd64 12.2.0-14 [10.7 MB]
+#14 3.138 Get:42 http://deb.debian.org/debian bookworm/main amd64 g++ amd64 4:12.2.0-3 [1356 B]
+#14 3.139 Get:43 http://deb.debian.org/debian bookworm/main amd64 make amd64 4.3-4.1 [396 kB]
+#14 3.140 Get:44 http://deb.debian.org/debian bookworm/main amd64 libdpkg-perl all 1.21.22 [603 kB]
+#14 3.153 Get:45 http://deb.debian.org/debian bookworm/main amd64 patch amd64 2.7.6-7 [128 kB]
+#14 3.154 Get:46 http://deb.debian.org/debian bookworm/main amd64 dpkg-dev all 1.21.22 [1353 kB]
+#14 3.176 Get:47 http://deb.debian.org/debian bookworm/main amd64 build-essential amd64 12.9 [7704 B]
+#14 3.177 Get:48 http://deb.debian.org/debian bookworm/main amd64 libbrotli1 amd64 1.0.9-2+b6 [275 kB]
+#14 3.178 Get:49 http://deb.debian.org/debian bookworm/main amd64 libsasl2-modules-db amd64 2.1.28+dfsg-10 [20.3 kB]
+#14 3.179 Get:50 http://deb.debian.org/debian bookworm/main amd64 libsasl2-2 amd64 2.1.28+dfsg-10 [59.7 kB]
+#14 3.180 Get:51 http://deb.debian.org/debian bookworm/main amd64 libldap-2.5-0 amd64 2.5.13+dfsg-5 [183 kB]
+#14 3.180 Get:52 http://deb.debian.org/debian bookworm/main amd64 libnghttp2-14 amd64 1.52.0-1+deb12u2 [73.0 kB]
+#14 3.181 Get:53 http://deb.debian.org/debian bookworm/main amd64 libpsl5 amd64 0.21.2-1 [58.7 kB]
+#14 3.181 Get:54 http://deb.debian.org/debian bookworm/main amd64 librtmp1 amd64 2.4+20151223.gitfa8646d.1-2+b2 [60.8 kB]
+#14 3.182 Get:55 http://deb.debian.org/debian bookworm/main amd64 libssh2-1 amd64 1.10.0-3+b1 [179 kB]
+#14 3.192 Get:56 http://deb.debian.org/debian bookworm/main amd64 libcurl4 amd64 7.88.1-10+deb12u12 [391 kB]
+#14 3.196 Get:57 http://deb.debian.org/debian bookworm/main amd64 curl amd64 7.88.1-10+deb12u12 [315 kB]
+#14 3.204 Get:58 http://deb.debian.org/debian bookworm/main amd64 libpq5 amd64 15.12-0+deb12u2 [192 kB]
+#14 3.206 Get:59 http://deb.debian.org/debian bookworm/main amd64 libssl-dev amd64 3.0.15-1~deb12u1 [2439 kB]
+#14 3.216 Get:60 http://deb.debian.org/debian bookworm/main amd64 libpq-dev amd64 15.12-0+deb12u2 [146 kB]
+#14 3.352 debconf: delaying package configuration, since apt-utils is not installed
+#14 3.379 Fetched 79.5 MB in 1s (142 MB/s)
+#14 3.406 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 6688 files and directories currently installed.)
+#14 3.413 Preparing to unpack .../perl-base_5.36.0-7+deb12u2_amd64.deb ...
+#14 3.436 Unpacking perl-base (5.36.0-7+deb12u2) over (5.36.0-7+deb12u1) ...
+#14 4.516 Setting up perl-base (5.36.0-7+deb12u2) ...
+#14 4.554 Selecting previously unselected package perl-modules-5.36.
+#14 4.554 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 6689 files and directories currently installed.)
+#14 4.559 Preparing to unpack .../00-perl-modules-5.36_5.36.0-7+deb12u2_all.deb ...
+#14 4.560 Unpacking perl-modules-5.36 (5.36.0-7+deb12u2) ...
+#14 4.977 Selecting previously unselected package libgdbm-compat4:amd64.
+#14 4.980 Preparing to unpack .../01-libgdbm-compat4_1.23-3_amd64.deb ...
+#14 4.984 Unpacking libgdbm-compat4:amd64 (1.23-3) ...
+#14 5.017 Selecting previously unselected package libperl5.36:amd64.
+#14 5.018 Preparing to unpack .../02-libperl5.36_5.36.0-7+deb12u2_amd64.deb ...
+#14 5.020 Unpacking libperl5.36:amd64 (5.36.0-7+deb12u2) ...
+#14 ...
+#15 [frontend-build 5/7] RUN npm ci
+#15 1.665 npm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported
+#15 2.091 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#15 2.664 npm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported
+#15 5.280 
+#15 5.280 added 240 packages, and audited 241 packages in 5s
+#15 5.282 
+#15 5.282 43 packages are looking for funding
+#15 5.282   run `npm fund` for details
+#15 5.294 
+#15 5.294 2 moderate severity vulnerabilities
+#15 5.294 
+#15 5.294 To address all issues (including breaking changes), run:
+#15 5.294   npm audit fix --force
+#15 5.294 
+#15 5.294 Run `npm audit` for details.
+#15 5.297 npm notice
+#15 5.297 npm notice New major version of npm available! 10.8.2 -> 11.3.0
+#15 5.297 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.3.0
+#15 5.297 npm notice To update run: npm install -g npm@11.3.0
+#15 5.297 npm notice
+#15 DONE 5.3s
+#14 [backend  3/12] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     libpq-dev     curl     openssl     && apt-get clean     && rm -rf /var/lib/apt/lists/*
+#14 5.433 Selecting previously unselected package perl.
+#14 5.435 Preparing to unpack .../03-perl_5.36.0-7+deb12u2_amd64.deb ...
+#14 5.442 Unpacking perl (5.36.0-7+deb12u2) ...
+#14 5.478 Selecting previously unselected package bzip2.
+#14 ...
+#16 [frontend-build 6/7] COPY client/ ./
+#16 DONE 0.4s
+#14 [backend  3/12] RUN apt-get update && apt-get install -y --no-install-recommends     build-essential     libpq-dev     curl     openssl     && apt-get clean     && rm -rf /var/lib/apt/lists/*
+#14 5.481 Preparing to unpack .../04-bzip2_1.0.8-5+b1_amd64.deb ...
+#14 5.483 Unpacking bzip2 (1.0.8-5+b1) ...
+#14 5.515 Selecting previously unselected package xz-utils.
+#14 5.517 Preparing to unpack .../05-xz-utils_5.4.1-1_amd64.deb ...
+#14 5.519 Unpacking xz-utils (5.4.1-1) ...
+#14 5.673 Selecting previously unselected package binutils-common:amd64.
+#14 5.675 Preparing to unpack .../06-binutils-common_2.40-2_amd64.deb ...
+#14 5.684 Unpacking binutils-common:amd64 (2.40-2) ...
+#14 5.878 Selecting previously unselected package libbinutils:amd64.
+#14 5.881 Preparing to unpack .../07-libbinutils_2.40-2_amd64.deb ...
+#14 5.883 Unpacking libbinutils:amd64 (2.40-2) ...
+#14 5.953 Selecting previously unselected package libctf-nobfd0:amd64.
+#14 5.956 Preparing to unpack .../08-libctf-nobfd0_2.40-2_amd64.deb ...
+#14 5.960 Unpacking libctf-nobfd0:amd64 (2.40-2) ...
+#14 5.997 Selecting previously unselected package libctf0:amd64.
+#14 5.999 Preparing to unpack .../09-libctf0_2.40-2_amd64.deb ...
+#14 6.002 Unpacking libctf0:amd64 (2.40-2) ...
+#14 6.036 Selecting previously unselected package libgprofng0:amd64.
+#14 6.038 Preparing to unpack .../10-libgprofng0_2.40-2_amd64.deb ...
+#14 6.040 Unpacking libgprofng0:amd64 (2.40-2) ...
+#14 6.129 Selecting previously unselected package libjansson4:amd64.
+#14 6.131 Preparing to unpack .../11-libjansson4_2.14-2_amd64.deb ...
+#14 6.133 Unpacking libjansson4:amd64 (2.14-2) ...
+#14 6.158 Selecting previously unselected package binutils-x86-64-linux-gnu.
+#14 6.160 Preparing to unpack .../12-binutils-x86-64-linux-gnu_2.40-2_amd64.deb ...
+#14 6.162 Unpacking binutils-x86-64-linux-gnu (2.40-2) ...
+#14 6.395 Selecting previously unselected package binutils.
+#14 6.398 Preparing to unpack .../13-binutils_2.40-2_amd64.deb ...
+#14 6.400 Unpacking binutils (2.40-2) ...
+#14 6.430 Selecting previously unselected package libc-dev-bin.
+#14 6.431 Preparing to unpack .../14-libc-dev-bin_2.36-9+deb12u10_amd64.deb ...
+#14 6.434 Unpacking libc-dev-bin (2.36-9+deb12u10) ...
+#14 6.461 Selecting previously unselected package linux-libc-dev:amd64.
+#14 6.463 Preparing to unpack .../15-linux-libc-dev_6.1.133-1_amd64.deb ...
+#14 6.465 Unpacking linux-libc-dev:amd64 (6.1.133-1) ...
+#14 6.733 Selecting previously unselected package libcrypt-dev:amd64.
+#14 6.733 Preparing to unpack .../16-libcrypt-dev_1%3a4.4.33-2_amd64.deb ...
+#14 6.742 Unpacking libcrypt-dev:amd64 (1:4.4.33-2) ...
+#14 6.775 Selecting previously unselected package libtirpc-dev:amd64.
+#14 6.777 Preparing to unpack .../17-libtirpc-dev_1.3.3+ds-1_amd64.deb ...
+#14 6.778 Unpacking libtirpc-dev:amd64 (1.3.3+ds-1) ...
+#14 6.819 Selecting previously unselected package libnsl-dev:amd64.
+#14 6.821 Preparing to unpack .../18-libnsl-dev_1.3.0-2_amd64.deb ...
+#14 6.825 Unpacking libnsl-dev:amd64 (1.3.0-2) ...
+#14 6.855 Selecting previously unselected package rpcsvc-proto.
+#14 6.857 Preparing to unpack .../19-rpcsvc-proto_1.4.3-1_amd64.deb ...
+#14 6.859 Unpacking rpcsvc-proto (1.4.3-1) ...
+#14 6.892 Selecting previously unselected package libc6-dev:amd64.
+#14 6.894 Preparing to unpack .../20-libc6-dev_2.36-9+deb12u10_amd64.deb ...
+#14 6.896 Unpacking libc6-dev:amd64 (2.36-9+deb12u10) ...
+#14 7.102 Selecting previously unselected package libisl23:amd64.
+#14 7.104 Preparing to unpack .../21-libisl23_0.25-1.1_amd64.deb ...
+#14 7.106 Unpacking libisl23:amd64 (0.25-1.1) ...
+#14 7.184 Selecting previously unselected package libmpfr6:amd64.
+#14 7.188 Preparing to unpack .../22-libmpfr6_4.2.0-1_amd64.deb ...
+#14 7.191 Unpacking libmpfr6:amd64 (4.2.0-1) ...
+#14 7.253 Selecting previously unselected package libmpc3:amd64.
+#14 7.256 Preparing to unpack .../23-libmpc3_1.3.1-1_amd64.deb ...
+#14 7.259 Unpacking libmpc3:amd64 (1.3.1-1) ...
+#14 7.284 Selecting previously unselected package cpp-12.
+#14 7.286 Preparing to unpack .../24-cpp-12_12.2.0-14_amd64.deb ...
+#14 7.288 Unpacking cpp-12 (12.2.0-14) ...
+#14 7.978 Selecting previously unselected package cpp.
+#14 7.981 Preparing to unpack .../25-cpp_4%3a12.2.0-3_amd64.deb ...
+#14 7.982 Unpacking cpp (4:12.2.0-3) ...
+#14 8.013 Selecting previously unselected package libcc1-0:amd64.
+#14 8.015 Preparing to unpack .../26-libcc1-0_12.2.0-14_amd64.deb ...
+#14 8.016 Unpacking libcc1-0:amd64 (12.2.0-14) ...
+#14 8.052 Selecting previously unselected package libgomp1:amd64.
+#14 8.053 Preparing to unpack .../27-libgomp1_12.2.0-14_amd64.deb ...
+#14 8.056 Unpacking libgomp1:amd64 (12.2.0-14) ...
+#14 8.087 Selecting previously unselected package libitm1:amd64.
+#14 8.089 Preparing to unpack .../28-libitm1_12.2.0-14_amd64.deb ...
+#14 8.090 Unpacking libitm1:amd64 (12.2.0-14) ...
+#14 8.138 Selecting previously unselected package libatomic1:amd64.
+#14 8.140 Preparing to unpack .../29-libatomic1_12.2.0-14_amd64.deb ...
+#14 8.142 Unpacking libatomic1:amd64 (12.2.0-14) ...
+#14 CANCELED
+#17 [frontend-build 7/7] RUN npm run build
+#17 0.242 
+#17 0.242 > storageswap-client@1.0.0 build
+#17 0.242 > vite build
+#17 0.242 
+#17 0.475 The CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.
+#17 0.519 vite v5.4.18 building for production...
+#17 0.989 transforming...
+#17 1.184 
+#17 1.185 warn - The `content` option in your Tailwind CSS configuration is missing or empty.
+#17 1.186 warn - Configure your content sources or your generated CSS will be missing styles.
+#17 1.186 warn - https://tailwindcss.com/docs/content-configuration
+#17 2.222 ✓ 106 modules transformed.
+#17 2.232 x Build failed in 1.67s
+#17 2.232 error during build:
+#17 2.232 [vite]: Rollup failed to resolve import "@radix-ui/react-avatar" from "/app/src/components/ui/avatar.tsx".
+#17 2.232 This is most likely unintended because it can break your application at runtime.
+#17 2.232 If you do want to externalize this module explicitly add it to
+#17 2.232 `build.rollupOptions.external`
+#17 2.232     at viteWarn (file:///app/node_modules/vite/dist/node/chunks/dep-DbT5NFX0.js:65789:17)
+#17 2.232     at onwarn (/app/node_modules/@vitejs/plugin-react/dist/index.cjs:105:9)
+#17 2.232     at onRollupWarning (file:///app/node_modules/vite/dist/node/chunks/dep-DbT5NFX0.js:65819:5)
+#17 2.232     at onwarn (file:///app/node_modules/vite/dist/node/chunks/dep-DbT5NFX0.js:65484:7)
+#17 2.232     at file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20718:13
+#17 2.232     at Object.logger [as onLog] (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:22583:9)
+#17 2.232     at ModuleLoader.handleInvalidResolvedId (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:21330:26)
+#17 2.232     at file:///app/node_modules/rollup/dist/es/shared/node-entry.js:21288:26
+#17 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+------
+ > [frontend-build 7/7] RUN npm run build:
+2.232 If you do want to externalize this module explicitly add it to
+2.232 `build.rollupOptions.external`
+2.232     at viteWarn (file:///app/node_modules/vite/dist/node/chunks/dep-DbT5NFX0.js:65789:17)
+2.232     at onwarn (/app/node_modules/@vitejs/plugin-react/dist/index.cjs:105:9)
+2.232     at onRollupWarning (file:///app/node_modules/vite/dist/node/chunks/dep-DbT5NFX0.js:65819:5)
+2.232     at onwarn (file:///app/node_modules/vite/dist/node/chunks/dep-DbT5NFX0.js:65484:7)
+2.232     at file:///app/node_modules/rollup/dist/es/shared/node-entry.js:20718:13
+2.232     at Object.logger [as onLog] (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:22583:9)
+2.232     at ModuleLoader.handleInvalidResolvedId (file:///app/node_modules/rollup/dist/es/shared/node-entry.js:21330:26)
+2.232     at file:///app/node_modules/rollup/dist/es/shared/node-entry.js:21288:26
+------
+Dockerfile:17
+--------------------
+  15 |     
+  16 |     # Build the frontend
+  17 | >>> RUN npm run build
+  18 |     
+  19 |     # Stage 2: Backend build
+--------------------
+ERROR: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
+Error: buildx failed with: ERROR: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 1
